@@ -15,7 +15,7 @@ describe Otb::JobsParser do
     end
 
     context "jobs list with no dependencies" do
-      before :each do
+      before :all do
         @jobs = Otb::JobsParser.new("a => \nb => \nc => ").parse
       end
 
@@ -29,7 +29,7 @@ describe Otb::JobsParser do
     end
 
     context "jobs list with dependencies" do
-      before :each do
+      before :all do
         @jobs = Otb::JobsParser.new("a => b\nb => c\nc => d").parse
       end
 
@@ -43,7 +43,7 @@ describe Otb::JobsParser do
     end
 
     context "jobs list with mixed content" do
-      before :each do
+      before :all do
         @jobs = Otb::JobsParser.new("a => \nb => c\nc => d").parse
       end
 

@@ -33,25 +33,46 @@ describe Otb::InvocationChain do
   end
 
   describe "jobs list as follow (a => \nb => c\nc => )" do
-    it "return a string with content 'acb'" do
+    before :all do
       parser = Otb::JobsParser.new("a => \nb => c\nc => ")
       chain = Otb::InvocationChain.new(parser)
-      jobs_queue = chain.order
-      expect(jobs_queue).to match 'c.*b'
-      expect(jobs_queue).to eq 'acb'
+      @jobs_queue = chain.order
+    end
+
+    it "return a string with content 'acb'" do
+      expect(@jobs_queue).to eq 'acb'
+    end
+
+    it "return a string with 'c' before 'b'" do
+      expect(@jobs_queue).to match 'c.*b'
     end
   end
 
   describe "jobs list as follow (a => \nb => c\nc => f\nd => a\ne => b\nf => )" do
-    it "return a string with content 'afcbde'" do
+    before :all do
       parser = Otb::JobsParser.new("a => \nb => c\nc => f\nd => a\ne => b\nf => ")
       chain = Otb::InvocationChain.new(parser)
-      jobs_queue = chain.order
-      expect(jobs_queue).to match 'c.*b'
-      expect(jobs_queue).to match 'f.*c'
-      expect(jobs_queue).to match 'a.*d'
-      expect(jobs_queue).to match 'b.*e'
-      expect(jobs_queue).to eq 'afcbde'
+      @jobs_queue = chain.order
+    end
+
+    it "return a string with content 'afcbde'" do
+      expect(@jobs_queue).to eq 'afcbde'
+    end
+
+    it "return a string with 'c' before 'b'" do
+      expect(@jobs_queue).to match 'c.*b'
+    end
+
+    it "return a string with 'f' before 'c'" do
+      expect(@jobs_queue).to match 'f.*c'
+    end
+
+    it "return a string with 'a' before 'd'" do
+      expect(@jobs_queue).to match 'a.*d'
+    end
+
+    it "return a string with 'b' before 'e'" do
+      expect(@jobs_queue).to match 'b.*e'
     end
   end
 
